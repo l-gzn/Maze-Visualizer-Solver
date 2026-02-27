@@ -2,9 +2,11 @@
 __pycache__/
 *.py[cod]
 *.pyo
+*$py.class
 
 # VS Code settings
 .vscode/
+tempCodeRunnerFile.py
 
 # macOS system files
 .DS_Store

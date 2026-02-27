@@ -60,12 +60,14 @@ The project is organized into a modular structure for better maintainability:
 
 ```text
 .
-├── main.py           # Application entry point
-├── src/              # Core logic and classes
-│   ├── classes.py    # Grid, Cell, and Button objects
-│   └── utils.py      # UI layout and event helpers
-├── assets/           # Visual assets
-│   └── Buttons/      # UI button icons
+├── main.py                # Application entry point & main loop
+├── maze_visualizer/       # Core package
+│   ├── maze.py            # Grid and Cell logic + Pathfinding algorithms
+│   ├── ui.py              # Interactive Button components
+│   ├── config.py          # Screen dimensions and maze constants
+│   └── utils.py           # Window resizing and event helpers
+├── assets/                # Multimedia files
+│   └── Buttons/           # UI button images
 └── README.md
 
 ```

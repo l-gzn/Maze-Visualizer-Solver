@@ -2,7 +2,7 @@ import os
 
 # --- Dirs ---
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BUTTONS_DIR = os.path.join(BASE_DIR, "Buttons")
+BUTTONS_DIR = os.path.join(BASE_DIR, "assets", "Buttons")
 
 # --- Screen ---
 HEIGHT = 600
