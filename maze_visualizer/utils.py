@@ -1,7 +1,5 @@
 import pygame
 
-
-
 # allows quitting during visualization to avoid staying stuck
 def handle_quit():
     for event in pygame.event.get():
@@ -16,4 +14,3 @@ def update_layout(height, width, cols):
     scaled_ui_width = int(200 * scale)
     button_x = width - scaled_ui_width + 5
     return cell_size, button_x, scale
-

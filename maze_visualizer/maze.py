@@ -5,7 +5,7 @@ from collections import deque
 import pygame
 from heapdict import heapdict
 
-from utils import handle_quit
+from .utils import handle_quit
 
 
 class Cell:
@@ -118,9 +118,9 @@ class Grid:
         if surface is None:
             surface = self.win
         Cell.draw(self.grid[row][col], surface, wall_color=wall_col, background_color=background_col, force=True)
-        x, y = (col - 1) * self.cell_size, (row - 1) * self.cell_size
+        # x, y = (col - 1) * self.cell_size, (row - 1) * self.cell_size
         # update a small region on the surface instead of whole screen (optimization)
-        pygame.display.update((x, y, self.cell_size * 3, self.cell_size * 3))
+        # pygame.display.update((x, y, self.cell_size * 3, self.cell_size * 3))
 
     def maze_gen(self, loops=False, obstacles=False):
         # must be placed inside a while loop in the main file to see the maze being generated
@@ -128,7 +128,7 @@ class Grid:
         if not self.current_cell.obstacle:
             self.draw_square(self.current_cell.row, self.current_cell.col, background_col="purple")
         else:
-            self.draw_square(self.current_cell.row, self.current_cell.col, background_col="black")
+            self.draw_square(self.current_cell.row, self.current_cell.col, background_col="green")
 
         if self.stack:
             self.current_cell = self.stack.pop()
@@ -240,20 +240,29 @@ class Grid:
             return (int(x), int(y))
 
 
-    def dfs(self, end_cell=None, sleep=0):
+    def dfs(self, end_cell=None):
         if end_cell is None:
             end_cell = self.end 
 
-        operations = 0
+        counter = 0
         self.visited = {self.current}
         stack = deque()
         stack.append(self.current)
+        
+        # VISUALIZATION SPEED CAP
+        # Lower = Smoother animation, Slower solve
+        # Higher = Choppy animation, Instant solve
+        BATCH_SIZE = 200
 
         while end_cell not in self.visited:
             handle_quit()
+            counter += 1
             row, col = self.num_to_ij(self.current)
             self.draw_square(row, col, background_col="orange")
-            operations += 1
+            
+            # Only draw to screen every 50 steps
+            if counter % BATCH_SIZE == 0:
+                pygame.display.update()
 
             neighbors = self.adjacency_list[self.current]
             unvisited = [n[0] for n in neighbors if n[0] not in self.visited]
@@ -267,20 +276,24 @@ class Grid:
                 stack.pop()
                 self.current = stack[-1]
 
-        
+        # Draw End Node
         x, y = self.from_num_coords_to_pygame_coords(end_cell, for_nodes=False)
         pygame.draw.rect(self.win, "orange", (x, y, self.cell_size, self.cell_size))
         
-
-        
+        # Path Animation
+        path_counter = 0
         for cell in stack:
+            path_counter += 1
             row, col = self.num_to_ij(cell)
             self.draw_square(row, col, background_col="red")
-            time.sleep(sleep)
+            
+            if path_counter % BATCH_SIZE == 0:
+                pygame.display.update()
+        
+        pygame.display.update()
 
-        return list(stack), operations
+        return list(stack)
 
-    # heuristic
     def h(self, n, null=False):
         # set null = True for dijkstra
         
@@ -301,11 +314,12 @@ class Grid:
         path.reverse()
         return path
 
-    def a_star(self, dijkstra=False, end_cell=None, h_mult=1, sleep=0):
-        # set to True to use Dijkstra
-
+    def a_star(self, dijkstra=False, end_cell=None, h_mult=1):
         if end_cell is None:
             end_cell = self.end    
+        
+        counter = 0
+        BATCH_SIZE = 200
         
         came_from = {}
         open_heap = heapdict()
@@ -326,36 +340,41 @@ class Grid:
         f_score[self.current] = self.h(self.current, null=dijkstra)
         open_heap[self.current] = f_score[self.current]
 
-
         row, col = self.num_to_ij(self.current)
         self.draw_square(row, col, background_col="orange")
+        pygame.display.update()
         last_current = self.current  
 
         while open_heap:
             handle_quit()
+            counter += 1
             current, _ = open_heap.popitem()
 
-           
             if last_current is not None and last_current != current:
                 row, col = self.num_to_ij(last_current)
                 self.draw_square(row, col, background_col="orange")
-                time.sleep(sleep)
+                
+                if counter % BATCH_SIZE == 0:
+                    pygame.display.update()
 
-
-        
             if current == end_cell:
                 row, col = self.num_to_ij(end_cell)
                 self.draw_square(row, col, background_col="orange")
+                pygame.display.update()
 
-                
                 path = self.reconstruct_path(came_from, current)
+                path_counter = 0
                 for cell in path:
+                    path_counter += 1
                     row, col = self.num_to_ij(cell)
                     self.draw_square(row, col, background_col="red")
-                    time.sleep(sleep)
+                    
+                    if path_counter % BATCH_SIZE == 0:
+                        pygame.display.update()
+                
+                pygame.display.update()
                 return path
 
-            # process neighbors
             for neighbor, weight in self.adjacency_list[current]:
                 temp_g_score = g_score[current] + weight
                 if temp_g_score < g_score[neighbor]:
@@ -367,43 +386,42 @@ class Grid:
                     row, col = self.num_to_ij(neighbor)
                     self.draw_square(row, col, background_col="orange")
                     
-                 
-                    row, col = self.num_to_ij(neighbor)
-                    self.draw_square(row, col, background_col="orange")
+                    if counter % BATCH_SIZE == 0:
+                        pygame.display.update()
                         
             last_current = current
 
         return None
 
-    def bfs(self, end_cell=None, find_deepest=False, sleep=0):
+    def bfs(self, end_cell=None, find_deepest=False):
         if end_cell is None:
             end_cell = self.end  
 
+        counter = 0
+        BATCH_SIZE = 200
         
         self.visited = {self.current}
-        # queue stores (current_cell, path_so_far)
         queue = [ (self.current, [self.current]) ]  
         path = None
 
         while queue:
             handle_quit()
+            counter += 1
             current, path = queue.pop(0)
 
             if not find_deepest and current == end_cell:
-                path = path  
                 break
-
             elif find_deepest:
-                path = path
+                pass
 
             self.visited.add(current)
 
-            
             if not find_deepest:
                 row, col = self.num_to_ij(current)
                 self.draw_square(row, col, background_col="orange")
-                time.sleep(sleep)
-
+                
+                if counter % BATCH_SIZE == 0:
+                    pygame.display.update()
             
             for neighbor_tuple in self.adjacency_list[current]:
                 neighbor = (
@@ -414,11 +432,17 @@ class Grid:
                 if neighbor not in self.visited and neighbor not in [c for c, _ in queue]:
                     queue.append((neighbor, path + [neighbor]))
 
-        
         if path and not find_deepest:
+            path_counter = 0
             for cell in path:
+                path_counter += 1
                 row, col = self.num_to_ij(cell)
                 self.draw_square(row, col, background_col="red")
+                
+                if path_counter % BATCH_SIZE == 0:
+                    pygame.display.update()
+            
+            pygame.display.update()
             return path
 
         elif find_deepest:
@@ -435,13 +459,13 @@ class Grid:
         for row in self.grid:
             for cell in row:
                 if cell.obstacle:
-                    self.draw_square(cell.row, cell.col, background_col="black", wall_col="white")
+                    self.draw_square(cell.row, cell.col, background_col="green", wall_col="white")
         if path:
             for cell in path:
                 row, col = self.num_to_ij(cell)
                 cell = self.get_cell(row, col)
                 if cell.obstacle:
-                    self.draw_square(cell.row, cell.col, background_col="green", wall_col="white")
+                    self.draw_square(cell.row, col, background_col="black", wall_col="white")
 
     def count_obstacles(self, path):
         counter = 0
@@ -469,31 +493,3 @@ class Grid:
 
         self.current = self.ij_to_num(0,0)
         self.visited = {self.current}
-
-
-class Button():
-    def __init__(self, x, y, image, scale=1):
-        width = image.get_width()
-        height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x,y)
-        self.clicked = False
-
-    def draw(self, surface):
-        action = False
-
-        pos = pygame.mouse.get_pos()
-
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                self.clicked = True
-                action = True
-
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-
-        
-        surface.blit(self.image, (self.rect.x, self.rect.y))
-
-        return action

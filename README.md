@@ -1,10 +1,10 @@
-# 🧩 Maze Visualizer & Solver
+# Maze Visualizer & Solver
 
 A Pygame-based application for **generating, visualizing, and solving mazes** using various classical pathfinding algorithms, with optional obstacles and dynamic resizing support.
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Maze Generation**
   - *Perfect Maze:* Generated using recursive backtracking with no loops.
@@ -38,14 +38,16 @@ A Pygame-based application for **generating, visualizing, and solving mazes** us
 
 ---
 
-## 📦 Project Structure
-
+## Project Structure
 ```text
-├── main.py        # Entry point with Pygame loop and UI logic
-├── classes.py     # Grid, Cell, and Button classes with core logic
-├── utils.py       # Utility functions (quit handling, layout updates)
-├── Buttons/       # Folder with button images
-├── README.md      # You're reading it!
+├── main.py         # Entry point with Pygame loop and UI logic
+├── config.py       # Global constants and configuration
+├── maze.py         # Core `Grid` and `Cell` classes
+├── ui.py           # UI classes like `Button`
+├── utils.py        # Utility functions (quit handling, layout updates)
+├── classes.py      # (Now empty, can be deleted)
+├── Buttons/        # Folder with button images
+├── README.md       # You're reading it!
 ```
 
 ---
@@ -55,15 +57,6 @@ A Pygame-based application for **generating, visualizing, and solving mazes** us
 ### Grid Representation
 - The maze is a grid of `Cell` objects, each with walls on four sides.
 - Recursive backtracking removes walls to form paths.
-
-### Algorithms
-- **DFS:** Uses a stack to go deep before backtracking.
-- **BFS:** Uses a queue to ensure the shortest path in unweighted graphs.
-- **A\*:** Uses `f(n) = g(n) + h(n)` with Manhattan distance as `h`.
-- **Dijkstra:** Special case of A* with `h(n) = 0`.
-
-### Obstacles
-- When enabled, cells may become impassable and increase path cost to 1000.
 
 ---
 
@@ -80,7 +73,7 @@ A Pygame-based application for **generating, visualizing, and solving mazes** us
 
 ---
 
-## 🧰 Requirements
+## Requirements
 
 - Python 3.7+
 - [Pygame](https://www.pygame.org/)
@@ -90,4 +83,3 @@ A Pygame-based application for **generating, visualizing, and solving mazes** us
 
 ```bash
 pip install pygame heapdict
-
