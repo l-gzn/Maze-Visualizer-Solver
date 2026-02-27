@@ -1,4 +1,3 @@
-```markdown
 # Maze Visualizer and Solver
 
 ![Python](https://img.shields.io/badge/Python-3.7%2B-blue?logo=python&logoColor=white)
@@ -7,7 +6,7 @@
 
 A dynamic visualization tool that brings graph theory to life. This application demonstrates maze generation and pathfinding algorithms in real-time using a custom-built Pygame interface.
 
-![App Demo](assets/main-pic.png)
+![App Demo](https://via.placeholder.com/800x400.png?text=Main+Hero+GIF+Placeholder)
 
 ---
 
@@ -24,9 +23,9 @@ A dynamic visualization tool that brings graph theory to life. This application 
 
 ## Algorithm Demos
 
-| Maze Generation | A* Search (Shortest Path) |
+| Maze Generation and A* Search (Shortest Path) |
 | :---: | :---: |
-| ![A* GIF](assets/a-star.gif) |
+| ![Generation GIF](assets/a-star.gif)
 | *Recursive Backtracking* | *Heuristic-based Navigation* |
 
 ---
@@ -37,8 +36,7 @@ A dynamic visualization tool that brings graph theory to life. This application 
    ```bash
    git clone [https://github.com/l-gzn/Maze-Visualizer-Solver.git](https://github.com/l-gzn/Maze-Visualizer-Solver.git)
    cd Maze-Visualizer-Solver
-
-```
+   ```
 
 2. **Install dependencies:**
 ```bash
