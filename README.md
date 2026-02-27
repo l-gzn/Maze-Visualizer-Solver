@@ -6,7 +6,7 @@
 
 A dynamic visualization tool that brings graph theory to life. This application demonstrates maze generation and pathfinding algorithms in real-time using a custom-built Pygame interface.
 
-![App Demo](https://via.placeholder.com/800x400.png?text=Main+Hero+GIF+Placeholder)
+![App Demo](assets/main-pic.png)
 
 ---
 
@@ -24,19 +24,18 @@ A dynamic visualization tool that brings graph theory to life. This application 
 ## Algorithm Demos
 
 | Maze Generation and A* Search (Shortest Path) |
-| :---: | :---: |
-| ![Generation GIF](assets/a-star.gif)
-| *Recursive Backtracking* | *Heuristic-based Navigation* |
+| :---: |
+| ![A* GIF](assets/a-star.gif) |
+| *Recursive Backtracking & Heuristic-based Navigation* |
 
 ---
 
 ## Installation and Setup
 
 1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/l-gzn/Maze-Visualizer-Solver.git](https://github.com/l-gzn/Maze-Visualizer-Solver.git)
-   cd Maze-Visualizer-Solver
-   ```
+  ```bash
+  git clone [https://github.com/l-gzn/Maze-Visualizer-Solver.git](https://github.com/l-gzn/Maze-Visualizer-Solver.git)
+  cd Maze-Visualizer-Solver
 
 2. **Install dependencies:**
 ```bash
