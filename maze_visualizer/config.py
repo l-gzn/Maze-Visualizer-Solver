@@ -10,7 +10,7 @@ WIDTH = HEIGHT + 200
 
 # --- Maze ---
 ROWS, COLS = 200, 200
-H_MULT = 1.5
+H_MULT = 1.0
 
 # --- UI ---
 UI_WIDTH = 200 
