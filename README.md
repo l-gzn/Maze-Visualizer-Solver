@@ -1,85 +1,99 @@
-# Maze Visualizer & Solver
+```markdown
+# Maze Visualizer and Solver
 
-A Pygame-based application for **generating, visualizing, and solving mazes** using various classical pathfinding algorithms, with optional obstacles and dynamic resizing support.
+![Python](https://img.shields.io/badge/Python-3.7%2B-blue?logo=python&logoColor=white)
+![Pygame](https://img.shields.io/badge/Pygame-2.0%2B-green?logo=pygame&logoColor=white)
+![License](https://img.shields.io/github/license/l-gzn/Maze-Visualizer-Solver)
+
+A dynamic visualization tool that brings graph theory to life. This application demonstrates maze generation and pathfinding algorithms in real-time using a custom-built Pygame interface.
+
+![App Demo](assets/main-pic.png)
 
 ---
 
-## Features
+## Key Features
 
-- **Maze Generation**
-  - *Perfect Maze:* Generated using recursive backtracking with no loops.
-  - *Non-perfect Maze:* Includes optional loops for more complex topologies.
-  - *Obstacle Placement:* Randomized and visualized as black squares.
+* **Maze Generation:**
+    * **Perfect:** Recursive Backtracking ensures exactly one path between any two points.
+    * **Non-Perfect:** Introduces cycles and loops for more complex solving scenarios.
+* **Pathfinding Suite:** Visualize DFS, BFS, A*, and Dijkstra as they explore the grid.
+* **Dynamic Obstacles:** Toggle randomized obstacles that solvers must navigate around.
+* **Flexible Layout:** The application automatically adjusts the grid and UI buttons when the window is resized.
 
-- **Algorithms**
-  - Depth-First Search (DFS)
-  - Breadth-First Search (BFS)
-  - A* Search
-  - Dijkstra's Algorithm (A* with zero heuristic)
+---
 
-- **Interactive UI**
-  - Clickable buttons for:
-    - Generating maze types
-    - Adding/removing obstacles
-    - Choosing endpoints (bottom-right or deepest)
-    - Running solving algorithms
+## Algorithm Demos
 
-- **Visualization**
-  - Real-time drawing of maze construction and pathfinding steps.
-  - Custom color-coding:
-    - Purple: Visited path
-    - Red: Final path
-    - Black: Obstacles
-    - Orange: Current exploration
-    - Green: Endpoint
+| Maze Generation | A* Search (Shortest Path) |
+| :---: | :---: |
+| ![A* GIF](assets/a-star.gif) |
+| *Recursive Backtracking* | *Heuristic-based Navigation* |
 
-- **Responsive Layout**
-  - Automatically adjusts button layout and cell size when window is resized.
+---
+
+## Installation and Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/l-gzn/Maze-Visualizer-Solver.git](https://github.com/l-gzn/Maze-Visualizer-Solver.git)
+   cd Maze-Visualizer-Solver
+
+```
+
+2. **Install dependencies:**
+```bash
+pip install pygame heapdict
+
+```
+
+
+3. **Run the application:**
+```bash
+python main.py
+
+```
+
+
 
 ---
 
 ## Project Structure
+
+The project is organized into a modular structure for better maintainability:
+
 ```text
-├── main.py         # Entry point with Pygame loop and UI logic
-├── config.py       # Global constants and configuration
-├── maze.py         # Core `Grid` and `Cell` classes
-├── ui.py           # UI classes like `Button`
-├── utils.py        # Utility functions (quit handling, layout updates)
-├── classes.py      # (Now empty, can be deleted)
-├── Buttons/        # Folder with button images
-├── README.md       # You're reading it!
+.
+├── main.py           # Application entry point
+├── src/              # Core logic and classes
+│   ├── classes.py    # Grid, Cell, and Button objects
+│   └── utils.py      # UI layout and event helpers
+├── assets/           # Visual assets
+│   └── Buttons/      # UI button icons
+└── README.md
+
 ```
 
 ---
 
-## 🧠 How It Works
+## Technical Overview
 
-### Grid Representation
-- The maze is a grid of `Cell` objects, each with walls on four sides.
-- Recursive backtracking removes walls to form paths.
+### Maze Generation
 
----
+The generator uses Recursive Backtracking. It treats the grid as a graph where each cell is a node. By removing walls between unvisited neighbors, it creates a tree structure, ensuring no loops and a guaranteed path from start to finish.
 
-## 🕹️ Controls
+### Pathfinding Algorithms
 
-| Action                        | Description                              |
-|------------------------------|------------------------------------------|
-| `Perfect`                    | Generate a perfect maze                  |
-| `Non-perfect`                | Generate maze with loops                 |
-| `Obstacles / No Obstacles`  | Toggle obstacle placement                |
-| `Deepest`                    | Set the end cell as the farthest from start |
-| `Bottom Right`              | Set the end cell as the bottom-right corner |
-| `DFS`, `BFS`, `A*`, `Dijkstra` | Solve the maze using the chosen algorithm |
+* **A* Search:** Uses a Manhattan distance heuristic to prioritize cells closer to the goal.
+* **BFS:** Explores layer by layer to guarantee the shortest path in an unweighted grid.
+* **DFS:** Dives deep into branches, creating winding paths characteristic of classic maze solving.
+* **Dijkstra:** A weighted search that finds the shortest path, effectively A* without a heuristic in this implementation.
 
 ---
 
-## Requirements
+## License
 
-- Python 3.7+
-- [Pygame](https://www.pygame.org/)
-- [heapdict](https://pypi.org/project/heapdict/)
+Distributed under the MIT License. See LICENSE for more information.
 
-### Install dependencies
+---
 
-```bash
-pip install pygame heapdict
+**Developed by [l-gzn**](https://www.google.com/search?q=https://github.com/l-gzn)
